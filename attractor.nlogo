@@ -9,6 +9,7 @@ to setup
     set pcolor blue
   ]
 
+  ; Patch 50 50 is an attractor / destination patch.
   ask patch 50 50
   [
     set pcolor green
@@ -32,6 +33,17 @@ to go
   tick
   if ticks >= 100 [stop]
 end
+
+
+; Each turtle is modelled by an Ornstein Uhlenbeck (OU) process with uncorrelated Brownian motions governed by SDEs:
+; dxt = α(μ - xt)dt + σ dWt
+; which can be discretized and approximated to (https://math.stackexchange.com/questions/1287634/implementing-ornstein-uhlenbeck-in-matlab):
+; Xn+1 = Xn + α(μ - Xn)Δt + σΔWn
+; where ΔWn are independent identically distributed Wiener increments , i.e. normal variates with zero mean and variance Δt.
+
+; So in 2 dimensions and taking Δt=1, we have:
+; Xn+1 = Xn + α(μ - Xn) + σN(0,1)
+; Yn+1 = Yn + α(μ - Yn) + σN(0,1)
 
 to move-fish
   let x xcor + alpha * (50 - xcor) + sigma * random-normal 0 1
@@ -134,23 +146,29 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This model is a demonstration of an Ornstein Uhlenbeck (OU) process to model fish movement towards a destination.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+The OU model is a modification of a random walk that allows individuals to move towards a location. Individuals are attracted to the green patch in the top right corner of the interface and move towards it with a deterministic attraction (α) and a random movement part (σ).
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+1. Adjust the slider parameters.
+2. Press the SETUP button.
+3. Press the GO button to begin the simulation.
+
+Parameters:
+ALPHA: Attraction rate
+SIGMA: Random noise
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+Directness of movement is a function of distance to the destination patch. I.e. movement becomes more random the closer fish get to their destination.
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+Adjust the parameters to see how the movement paths change.
 
 ## EXTENDING THE MODEL
 
