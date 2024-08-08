@@ -1,4 +1,4 @@
-breed[fish]
+breed[fish one-fish]
 
 to setup
   clear-all
