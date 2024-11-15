@@ -1,5 +1,27 @@
 breed[fish one-fish]
 
+to make-movie
+
+  ;; prompt user for movie location
+  user-message "First, save your new movie file (choose a name ending with .mov)"
+  let path user-new-file
+  if not is-string? path [ stop ]  ;; stop if user cancelled
+
+  ;; run the model
+  setup
+  movie-start path
+  movie-grab-view
+  repeat 100           ; how many ticks to record
+    [ go
+      movie-grab-view ]
+
+  ;; export the movie
+  movie-close
+  user-message (word "Exported movie to " path)
+
+end
+
+
 to setup
   clear-all
 
@@ -141,6 +163,23 @@ alpha
 1
 NIL
 HORIZONTAL
+
+BUTTON
+752
+54
+849
+87
+NIL
+make-movie
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
